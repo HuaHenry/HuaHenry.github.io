@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>评价类问题-层次分析法 // HzzzQ&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="HzzzQ" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.3c3c186cd62e563ad6e2f00a89dbee656ab912d1d46f856b5605dd0232521e2a.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="评价类问题-层次分析法"/>
+<meta name="twitter:description" content="层次分析法Python建模代码：
+# -*- coding: utf-8 -*- # @File : test.py # @Time : 2023/03/26 13:30:30 # @Author : HzzzQ # @College : Computer Science &amp; Engineering, CEIE, Tongji University import numpy as np def ConsisTest(X): &#34;&#34;&#34; 计算权重 &#34;&#34;&#34; #方法一：算术平均法 ## 第一步：将判断矩阵按照列归一化（每个元素除以其所在列的和） X = np.array(X) #将X转换为np.array对象 sum_X = X.sum(axis=0) #计算X每列的和 (n,n) = X.shape #X为方阵，行和列相同，所以用一个n来接收 sum_X = np.tile(sum_X,(n,1)) #将和向量重复n行组成新的矩阵 stand_X = X/sum_X #标准化X（X中每个元素除以其所在列的和） ## 第二步：将归一化矩阵每一行求和 sum_row = stand_X.sum(axis=1) ## 第三步：将相加后得到的向量中每个元素除以n即可得到权重向量 print(&#34;算数平均法求权重的结果为：&#34;) print(sum_row/n) print() #方法二：几何平均法 ## 第一步：矩阵元素按行相乘 prod_X= X."/>
+
+    <meta property="og:title" content="评价类问题-层次分析法" />
+<meta property="og:description" content="层次分析法Python建模代码：
+# -*- coding: utf-8 -*- # @File : test.py # @Time : 2023/03/26 13:30:30 # @Author : HzzzQ # @College : Computer Science &amp; Engineering, CEIE, Tongji University import numpy as np def ConsisTest(X): &#34;&#34;&#34; 计算权重 &#34;&#34;&#34; #方法一：算术平均法 ## 第一步：将判断矩阵按照列归一化（每个元素除以其所在列的和） X = np.array(X) #将X转换为np.array对象 sum_X = X.sum(axis=0) #计算X每列的和 (n,n) = X.shape #X为方阵，行和列相同，所以用一个n来接收 sum_X = np.tile(sum_X,(n,1)) #将和向量重复n行组成新的矩阵 stand_X = X/sum_X #标准化X（X中每个元素除以其所在列的和） ## 第二步：将归一化矩阵每一行求和 sum_row = stand_X.sum(axis=1) ## 第三步：将相加后得到的向量中每个元素除以n即可得到权重向量 print(&#34;算数平均法求权重的结果为：&#34;) print(sum_row/n) print() #方法二：几何平均法 ## 第一步：矩阵元素按行相乘 prod_X= X." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://HuaHenry.github.io/post/%E8%AF%84%E4%BB%B7%E7%B1%BB%E9%97%AE%E9%A2%98-%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-03-28T14:41:54+08:00" />
+<meta property="article:modified_time" content="2023-03-28T14:41:54+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://HuaHenry.github.io"><img class="app-header-avatar" src="https://img.zcool.cn/community/01e5105de607a6a80120686ba7050e.jpg@1280w_1l_2o_100sh.jpg" alt="HzzzQ" /></a>
+      <span class="app-header-title">HzzzQ&#39;s Blog</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+      </nav>
+      <p>Department of Computer Science &amp; Engineering, CEIE, Tongji University, Shanghai</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/gohugoio" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/gohugoio" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">评价类问题-层次分析法</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 28, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://HuaHenry.github.io/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/">数学建模</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>层次分析法Python建模代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># @File    :   test.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># @Time    :   2023/03/26 13:30:30</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># @Author  :   HzzzQ </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># @College :   Computer Science &amp; Engineering, CEIE, Tongji University</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ConsisTest</span>(X):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34; 计算权重 &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#方法一：算术平均法</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第一步：将判断矩阵按照列归一化（每个元素除以其所在列的和）</span>
+</span></span><span style="display:flex;"><span>    X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(X)                 <span style="color:#75715e">#将X转换为np.array对象</span>
+</span></span><span style="display:flex;"><span>    sum_X <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>sum(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)           <span style="color:#75715e">#计算X每列的和</span>
+</span></span><span style="display:flex;"><span>    (n,n) <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>shape                 <span style="color:#75715e">#X为方阵，行和列相同，所以用一个n来接收</span>
+</span></span><span style="display:flex;"><span>    sum_X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>tile(sum_X,(n,<span style="color:#ae81ff">1</span>))    <span style="color:#75715e">#将和向量重复n行组成新的矩阵</span>
+</span></span><span style="display:flex;"><span>    stand_X <span style="color:#f92672">=</span> X<span style="color:#f92672">/</span>sum_X               <span style="color:#75715e">#标准化X（X中每个元素除以其所在列的和）</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第二步：将归一化矩阵每一行求和   </span>
+</span></span><span style="display:flex;"><span>    sum_row <span style="color:#f92672">=</span> stand_X<span style="color:#f92672">.</span>sum(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)   
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第三步：将相加后得到的向量中每个元素除以n即可得到权重向量</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;算数平均法求权重的结果为：&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(sum_row<span style="color:#f92672">/</span>n)
+</span></span><span style="display:flex;"><span>    print()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#方法二：几何平均法</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第一步：矩阵元素按行相乘</span>
+</span></span><span style="display:flex;"><span>    prod_X<span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>prod(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)          <span style="color:#75715e">#计算每一列元素之积</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 没写完...待补充</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#方法二：特征值法</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第一步：找出矩阵X的最大特征值以及其对应的特征向量</span>
+</span></span><span style="display:flex;"><span>    V,E <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>eig(X)          <span style="color:#75715e">#V是特征值，E是特征值对应的特征向量</span>
+</span></span><span style="display:flex;"><span>    max_value <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>max(V)           <span style="color:#75715e">#最大特征值</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;最大特征值是：&#34;</span>,max_value)
+</span></span><span style="display:flex;"><span>    max_v_index <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>argmax(V)      <span style="color:#75715e">#返回最大特征值所在位置</span>
+</span></span><span style="display:flex;"><span>    max_eiv <span style="color:#f92672">=</span> E[:,max_v_index]      <span style="color:#75715e">#最大特征值对应的特征向量</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第二步：对求出的特征向量进行归一化处理即可得到权重</span>
+</span></span><span style="display:flex;"><span>    stand_eiv <span style="color:#f92672">=</span> max_eiv<span style="color:#f92672">/</span>max_eiv<span style="color:#f92672">.</span>sum()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;特征值法求权重的结果为：&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(stand_eiv)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;——————————————————————————————————————————————&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;一致性检验&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第一步：计算一致性指标CI</span>
+</span></span><span style="display:flex;"><span>    CI <span style="color:#f92672">=</span> (max_value<span style="color:#f92672">-</span>n)<span style="color:#f92672">/</span>(n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第二步：查找对应的平均随机一致性指标RI</span>
+</span></span><span style="display:flex;"><span>    RI <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">15</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0.52</span>,<span style="color:#ae81ff">0.89</span>,<span style="color:#ae81ff">1.12</span>,<span style="color:#ae81ff">1.26</span>,<span style="color:#ae81ff">1.36</span>,<span style="color:#ae81ff">1.41</span>,<span style="color:#ae81ff">1.46</span>,<span style="color:#ae81ff">1.49</span>,<span style="color:#ae81ff">1.52</span>,<span style="color:#ae81ff">1.54</span>,<span style="color:#ae81ff">1.56</span>,<span style="color:#ae81ff">1.58</span>,<span style="color:#ae81ff">1.59</span>])
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## 第三步：计算一致性比例CR</span>
+</span></span><span style="display:flex;"><span>    CR <span style="color:#f92672">=</span> CI<span style="color:#f92672">/</span>RI[n]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> CR <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.1</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">CR=&#34;</span>,CR,<span style="color:#e6db74">&#34;，小于0.1，通过一致性检验</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">CR=&#34;</span>,CR,<span style="color:#e6db74">&#34;，大于等于0.1，没有通过一致性检验，请修改判断矩阵</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    A <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    row<span style="color:#f92672">=</span>input(<span style="color:#e6db74">&#34;输入矩阵阶数：&#34;</span>)         <span style="color:#75715e"># 注：只支持输入小数（如0.5），不支持输入分数（如1/2）</span>
+</span></span><span style="display:flex;"><span>    print()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, int(row)):
+</span></span><span style="display:flex;"><span>        temp <span style="color:#f92672">=</span> list(map(float,input()<span style="color:#f92672">.</span>split()))
+</span></span><span style="display:flex;"><span>        A<span style="color:#f92672">.</span>append(temp)
+</span></span><span style="display:flex;"><span>    print()
+</span></span><span style="display:flex;"><span>    ConsisTest(A)
+</span></span></code></pre></div>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
