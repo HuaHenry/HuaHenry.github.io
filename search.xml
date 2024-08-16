@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>大语言模型微调之道</title>
+    <url>/2024/08/16/LLM%20Finetuning/</url>
+    <content><![CDATA[<blockquote>
+<p><strong>Finetuning Large Language Models</strong> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.464ex;" xmlns="http://www.w3.org/2000/svg" width="2.079ex" height="2.034ex" role="img" focusable="false" viewBox="0 -694 919 899"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mi" transform="translate(429,0)"><path data-c="1D466" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> Sharon Zhou &amp; Andrew Ng<br><code>2024/8/12</code> Update</p>
+</blockquote>
+<h2 id="一、为什么要微调"><a href="#一、为什么要微调" class="headerlink" title="一、为什么要微调"></a>一、为什么要微调</h2><h3 id="1-1-大模型微调的作用"><a href="#1-1-大模型微调的作用" class="headerlink" title="1.1 大模型微调的作用"></a>1.1 大模型微调的作用</h3><ul>
+<li><p>可以处理比 prompt 更长的数据（不仅能访问数据，并且能从中学习）<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 变得<strong>更加专业</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811214446786.png" alt="image-20240811214446786" style="zoom:40%;"></li>
+<li><p>产生更<strong>一致的输出</strong>或行为 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 知道什么<strong>场景</strong>下怎么回答</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811214554556.png" alt="image-20240811214554556" style="zoom:40%;"></li>
+<li><p>减少模型<strong>幻觉</strong>（hallucination）<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 知道<strong>正确</strong>的回答是什么</p>
+</li>
+</ul>
+<h3 id="1-2-微调和提示工程的比较"><a href="#1-2-微调和提示工程的比较" class="headerlink" title="1.2 微调和提示工程的比较"></a>1.2 微调和提示工程的比较</h3>
+  <div class="note p-4 mb-4 rounded-small info">
+    <p>提示工程：prompt engineering</p>
+
+  </div>
+
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811220209160.png" alt="image-20240811220209160" style="zoom:50%;">
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>RAG</p>
+
+    </div>
+    <div class="notel-content">
+      <p>Retrieval-Augmented Generation 检索与生成混合式架构<br><strong>检索（Retrieval）</strong>：</p>
+<ul>
+<li>在生成回答之前，RAG模型会从一个大型的知识库（如文档集合、数据库或特定索引）中检索相关信息。这些信息可能是段落、句子或其他相关数据。</li>
+<li>检索过程通常使用高效的检索模型（如BM25或向量检索技术）来找到与用户查询最相关的文档或片段。<br> <strong>生成（Generation）</strong>：</li>
+<li>在获取到相关信息后，RAG会使用生成模型（通常是预训练的大型语言模型，如GPT）来生成最终的回答。</li>
+<li>生成部分利用检索到的上下文信息，提高了回答的准确性和一致性，特别是在涉及到具体知识点或事实的情况下。</li>
+</ul>
+
+    </div>
+  </div>
+
+
+<h3 id="1-3-微调的好处"><a href="#1-3-微调的好处" class="headerlink" title="1.3 微调的好处"></a>1.3 微调的好处</h3><ul>
+<li><strong>性能提升</strong>（减少生成领域之外或无关的内容）</li>
+<li>保证数据<strong>隐私性</strong>（可以在本机或自己的 VPC 虚拟机上进行微调）</li>
+<li><strong>成本低且透明</strong>，有足够的控制权（可以微调出一个小模型以实现每次请求的成本降低）</li>
+<li><strong>可靠性</strong>（降低延迟）</li>
+</ul>
+<h2 id="二、微调在训练过程中的位置"><a href="#二、微调在训练过程中的位置" class="headerlink" title="二、微调在训练过程中的位置"></a>二、微调在训练过程中的位置</h2><h3 id="2-1-预训练"><a href="#2-1-预训练" class="headerlink" title="2.1 预训练"></a>2.1 预训练</h3><p><strong>预训练</strong>过程：从零开始（无法组织合理的单词），使用互联网语料学习预测下一个 token</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230120287.png" alt="image-20240811230120287" style="zoom:40%;">
+
+
+
+  <div class="note p-4 mb-4 rounded-small warning">
+    <p>预训练过程中使用网络数据会导致的问题：</p>
+ <img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230641220.png" alt="image-20240811230641220" style="zoom:40%;">
+
+<p> （左图）使用选择题数据进行训练，则会导致模型生成的结果为下一个选项</p>
+
+  </div>
+
+
+<h3 id="2-2-微调"><a href="#2-2-微调" class="headerlink" title="2.2 微调"></a>2.2 微调</h3><p>微调的作用：将预训练生成的基础模型（base model）进一步训练为<strong>有用的模型</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230953764.png" alt="image-20240811230953764" style="zoom:50%;">
+
+<p>区别于预训练，只需要使用<strong>少量数据</strong>（因为已经有了丰富语料训练的基础模型）</p>
+<h3 id="2-3-微调的行为作用"><a href="#2-3-微调的行为作用" class="headerlink" title="2.3 微调的行为作用"></a>2.3 微调的行为作用</h3><ul>
+<li>改变模型的<strong>行为模式</strong>（在不需要大量的提示工程的前提下更适用于某种特定的场景，如对话、问卷调查等）</li>
+<li>学习<strong>新的知识</strong>（特定领域的细分知识学习+纠正泛式学习的错误）</li>
+</ul>
+<h3 id="2-4-微调的任务"><a href="#2-4-微调的任务" class="headerlink" title="2.4 微调的任务"></a>2.4 微调的任务</h3><ul>
+<li><strong>提取</strong>（Extraction）：提炼关键词，Reading 的工作 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 主题提取/规划等任务</li>
+<li><strong>拓展</strong>（Expansion）：内容扩充，Writing 的工作      <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 聊天/写信/写代码等任务</li>
+</ul>
+<h2 id="三、指令微调"><a href="#三、指令微调" class="headerlink" title="三、指令微调"></a>三、指令微调</h2>
+  <div class="note p-4 mb-4 rounded-small red icon-padding">
+    <i class="note-icon fa-solid fa-bolt"></i><p>赋予GPT聊天的能力 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> ChatGPT</p>
+
+  </div>
+
+<h3 id="3-1-什么是指令微调"><a href="#3-1-什么是指令微调" class="headerlink" title="3.1 什么是指令微调"></a>3.1 什么是指令微调</h3><p>指令微调：让模型<strong>变得更像一个聊天机器人</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205113081.png" alt="image-20240812205113081" style="zoom:50%;">
+
+<p>使用的数据集：<strong>对话式数据集</strong>（指令应答式数据集），从晚上的聊天对话中可以获取。</p>
+<h3 id="3-2-指令微调生成"><a href="#3-2-指令微调生成" class="headerlink" title="3.2 指令微调生成"></a>3.2 指令微调生成</h3><ul>
+<li>可以生成微调时学习的知识数据</li>
+<li>也可以生成<strong>微调中不存在的数据</strong>（但是base model学习的数据中包含）<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 微调后也可以回答（如回答代码问题）</li>
+</ul>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205508007.png" alt="image-20240812205508007" style="zoom:50%;">
+
+<h3 id="3-3-指令微调过程"><a href="#3-3-指令微调过程" class="headerlink" title="3.3 指令微调过程"></a>3.3 指令微调过程</h3><p>遵循普通的微调策略：<strong>数据准备/训练/评估</strong> 的<strong>循环</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205634840.png" alt="image-20240812205634840" style="zoom:40%;">
+
+<p>指令微调的区别在于：<strong>数据准备阶段</strong> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 根据不同的任务调整数据</p>
+<h2 id="四、数据准备"><a href="#四、数据准备" class="headerlink" title="四、数据准备"></a>四、数据准备</h2><h3 id="4-1-数据标准"><a href="#4-1-数据标准" class="headerlink" title="4.1 数据标准"></a>4.1 数据标准</h3><p>如何衡量好的数据（better data）</p>
+<ul>
+<li>高质量（因为要让LLM去模仿）</li>
+<li>多样性（保证不一样的输入会有不一样的结果）</li>
+<li>真实数据（一般不使用生成数据，因为生成行为存在固有模式）</li>
+<li>多</li>
+</ul>
+<h3 id="4-2-准备步骤"><a href="#4-2-准备步骤" class="headerlink" title="4.2 准备步骤"></a>4.2 准备步骤</h3><ul>
+<li>收集<strong>指令-响应对</strong>（instruction-response pair）</li>
+<li><strong>连接</strong>指令和响应（使用prompt模板等）</li>
+<li><strong>分词</strong>（Tokenize），接着<strong>填充或截断</strong>数据 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 大小适合模型</li>
+<li><strong>划分</strong>训练集和测试集</li>
+</ul>
+<h3 id="4-3-分词（Tokenize）"><a href="#4-3-分词（Tokenize）" class="headerlink" title="4.3 分词（Tokenize）"></a>4.3 分词（Tokenize）</h3><p>分词：将<strong>文本数据转化为数字</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812213610668.png" alt="image-20240812213610668" style="zoom:50%;">
+
+<p>一般来说不是按照单词划分，而是按照==<strong>出现的频率</strong>==，如上图的 <code>ing</code> <strong>词元</strong>（token）</p>
+<p>一般实践中会根据指定的模型自动选择合适的分词器：</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer</span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">"Model_Name"</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>由于分词的结果导致token的个数长度不同（如下图不同的句子有不同个数个token），使用 padding <strong>填充（padding）词元</strong>进行补全 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 可以使用一致维度的张量（tensor）</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812214141098.png" alt="image-20240812214141098" style="zoom:50%;">
+
+<p>填充结果：</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812214316681.png" alt="image-20240812214316681" style="zoom:50%;">
+
+<p>受限于模型能够接收的最大编码长度，需要对某些过长的进行<strong>截断（truncation）</strong>：</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812215645773.png" alt="image-20240812215645773" style="zoom:50%;">
+
+<p>设置 <code>tokenizer</code> 的属性即可实现填充和截断：</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="code"><pre><span class="line">_=tokenizer(list_texts,max_length=xxx,truncation=<span class="literal">True</span>,padding=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="五、训练过程"><a href="#五、训练过程" class="headerlink" title="五、训练过程"></a>五、训练过程</h2><p>和普通的神经网络训练相同，添加训练数据 -&gt; 计算损失 -&gt; 反向传播 -&gt; 更新权重</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812222250254.png" alt="image-20240812222250254" style="zoom:50%;">
+
+
+  <div class="note p-4 mb-4 rounded-small primary">
+    <p>补充：入门时可以尝试 WebUI 式微调方式：</p>
+<p><a class="link" href="https://github.com/hiyouga/LLaMA-Factory">hiyouga/LLaMA-Factory: A WebUI for Efficient Fine-Tuning of 100+ LLMs (ACL 2024) (github.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813143708282.png" alt="image-20240813143708282" style="zoom:50%;">
+  </div>
+
+<p>训练过程中可以打印查看数据集中存在<strong>主题纠偏</strong>（Moderation，类似于ChatGPT回答的 “对不起我作为AI我不知道….” ），使得LLM学会聚焦主题：</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813144220233.png" alt="image-20240813144220233" style="zoom:50%;">
+
+<h2 id="六、评估和迭代"><a href="#六、评估和迭代" class="headerlink" title="六、评估和迭代"></a>六、评估和迭代</h2><h3 id="6-1-常用基准"><a href="#6-1-常用基准" class="headerlink" title="6.1 常用基准"></a>6.1 常用基准</h3><p><strong>ARC / HellaSwag / MMLU / TruthfulQA</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813153359741.png" alt="image-20240813153359741" style="zoom:50%;">
+
+<p>注意不能用单一的 benckmark 结果来评判微调的好坏（微调的作用是更适用于某一个领域，也许这个领域和 benchmark 的领域并不相似）</p>
+<h3 id="6-2-错误分析（Error-Analysis）"><a href="#6-2-错误分析（Error-Analysis）" class="headerlink" title="6.2 错误分析（Error Analysis）"></a>6.2 错误分析（Error Analysis）</h3><p>常用的分析和评估模型的框架 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> <strong>分类错误</strong>，以便能识别常见错误，并<strong>优先解决</strong>常见和重大的错误</p>
+<p>错误类型：</p>
+<ul>
+<li>错误拼写</li>
+<li>长度（过于啰嗦）</li>
+<li>重复</li>
+</ul>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813153912024.png" alt="image-20240813153912024" style="zoom:50%;">
+
+<h2 id="七、建议和实用技巧"><a href="#七、建议和实用技巧" class="headerlink" title="七、建议和实用技巧"></a>七、建议和实用技巧</h2><p><img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813162743024.png" alt="image-20240813162743024"></p>
+<p>更高效的参数微调方法：<strong>LoRA</strong></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813163853911.png" alt="image-20240813163853911"></p>
+
+  <div class="note p-4 mb-4 rounded-small red icon-padding">
+    <i class="note-icon fa-solid fa-bolt"></i><img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813164000009.png" alt="image-20240813164000009" style="zoom:60%;">
+  </div>
+
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813164024324.png" alt="image-20240813164024324" style="zoom:67%;">
+]]></content>
+      <categories>
+        <category>NLP</category>
+      </categories>
+      <tags>
+        <tag>LLM</tag>
+      </tags>
+  </entry>
+</search>

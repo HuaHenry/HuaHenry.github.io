@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Henry Hua">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/08/16/llm finetuning/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Finetuning Large Language Models  Sharon Zhou &amp; Andrew Ng2024&#x2F;8&#x2F;12 Update  一、为什么要微调1.1 大模型微调的作用 可以处理比 prompt 更长的数据（不仅能访问数据，并且能从中学习） 变得更加专业  产生更一致的输出或行为  知道什么场景下怎么回答  减少模型幻觉（hallucination） 知道正确的回答">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大语言模型微调之道">
+<meta property="og:url" content="http://example.com/2024/08/16/LLM%20Finetuning/index.html">
+<meta property="og:site_name" content="Zhouqi&#39;s Blog">
+<meta property="og:description" content="Finetuning Large Language Models  Sharon Zhou &amp; Andrew Ng2024&#x2F;8&#x2F;12 Update  一、为什么要微调1.1 大模型微调的作用 可以处理比 prompt 更长的数据（不仅能访问数据，并且能从中学习） 变得更加专业  产生更一致的输出或行为  知道什么场景下怎么回答  减少模型幻觉（hallucination） 知道正确的回答">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811214446786.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811214554556.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811220209160.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230120287.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230641220.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230953764.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205113081.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205508007.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205634840.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812213610668.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812214141098.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812214316681.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812215645773.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812222250254.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813143708282.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813144220233.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813153359741.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813153912024.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813162743024.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813163853911.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813164000009.png">
+<meta property="og:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813164024324.png">
+<meta property="article:published_time" content="2024-08-16T08:40:35.893Z">
+<meta property="article:modified_time" content="2024-08-16T11:07:50.302Z">
+<meta property="article:author" content="Henry Hua">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811214446786.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            大语言模型微调之道 -
+        
+        Zhouqi&#39;s Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":6,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Zhouqi's Blog","subtitle":{"text":["Welcome to Zhouqi's Blog"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/HuaHenry","instagram":null,"zhihu":"https://www.zhihu.com/people/hua-zhou-qi","twitter":null,"email":null,"fas fa-envelope":"henryhua0721@foxmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/EvanNotFound/hexo-theme-redefine","Blog":"https://ohevan.com","Friends":"/friends"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"YYYY-MM-DD","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Zhouqi&#39;s Blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Zhouqi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://ohevan.com">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/friends">
+                                                    FRIENDS
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://ohevan.com">BLOG</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/friends">FRIENDS</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">大语言模型微调之道</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="https://avatars.githubusercontent.com/u/116665615?v=4">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Henry Hua</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-08-16 16:40:35</span>
+        <span class="mobile">2024-08-16 16:40:35</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-08-16 19:07:50</span>
+            <span class="mobile">2024-08-16 19:07:50</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/NLP/">NLP</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/LLM/">LLM</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.5k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>5 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <blockquote>
+<p><strong>Finetuning Large Language Models</strong> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.464ex;" xmlns="http://www.w3.org/2000/svg" width="2.079ex" height="2.034ex" role="img" focusable="false" viewBox="0 -694 919 899"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mi" transform="translate(429,0)"><path data-c="1D466" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> Sharon Zhou &amp; Andrew Ng<br><code>2024/8/12</code> Update</p>
+</blockquote>
+<h2 id="一、为什么要微调"><a href="#一、为什么要微调" class="headerlink" title="一、为什么要微调"></a>一、为什么要微调</h2><h3 id="1-1-大模型微调的作用"><a href="#1-1-大模型微调的作用" class="headerlink" title="1.1 大模型微调的作用"></a>1.1 大模型微调的作用</h3><ul>
+<li><p>可以处理比 prompt 更长的数据（不仅能访问数据，并且能从中学习）<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 变得<strong>更加专业</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811214446786.png" alt="image-20240811214446786" style="zoom:40%;"></li>
+<li><p>产生更<strong>一致的输出</strong>或行为 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 知道什么<strong>场景</strong>下怎么回答</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811214554556.png" alt="image-20240811214554556" style="zoom:40%;"></li>
+<li><p>减少模型<strong>幻觉</strong>（hallucination）<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 知道<strong>正确</strong>的回答是什么</p>
+</li>
+</ul>
+<h3 id="1-2-微调和提示工程的比较"><a href="#1-2-微调和提示工程的比较" class="headerlink" title="1.2 微调和提示工程的比较"></a>1.2 微调和提示工程的比较</h3>
+  <div class="note p-4 mb-4 rounded-small info">
+    <p>提示工程：prompt engineering</p>
+
+  </div>
+
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811220209160.png" alt="image-20240811220209160" style="zoom:50%;">
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>RAG</p>
+
+    </div>
+    <div class="notel-content">
+      <p>Retrieval-Augmented Generation 检索与生成混合式架构<br><strong>检索（Retrieval）</strong>：</p>
+<ul>
+<li>在生成回答之前，RAG模型会从一个大型的知识库（如文档集合、数据库或特定索引）中检索相关信息。这些信息可能是段落、句子或其他相关数据。</li>
+<li>检索过程通常使用高效的检索模型（如BM25或向量检索技术）来找到与用户查询最相关的文档或片段。<br> <strong>生成（Generation）</strong>：</li>
+<li>在获取到相关信息后，RAG会使用生成模型（通常是预训练的大型语言模型，如GPT）来生成最终的回答。</li>
+<li>生成部分利用检索到的上下文信息，提高了回答的准确性和一致性，特别是在涉及到具体知识点或事实的情况下。</li>
+</ul>
+
+    </div>
+  </div>
+
+
+<h3 id="1-3-微调的好处"><a href="#1-3-微调的好处" class="headerlink" title="1.3 微调的好处"></a>1.3 微调的好处</h3><ul>
+<li><strong>性能提升</strong>（减少生成领域之外或无关的内容）</li>
+<li>保证数据<strong>隐私性</strong>（可以在本机或自己的 VPC 虚拟机上进行微调）</li>
+<li><strong>成本低且透明</strong>，有足够的控制权（可以微调出一个小模型以实现每次请求的成本降低）</li>
+<li><strong>可靠性</strong>（降低延迟）</li>
+</ul>
+<h2 id="二、微调在训练过程中的位置"><a href="#二、微调在训练过程中的位置" class="headerlink" title="二、微调在训练过程中的位置"></a>二、微调在训练过程中的位置</h2><h3 id="2-1-预训练"><a href="#2-1-预训练" class="headerlink" title="2.1 预训练"></a>2.1 预训练</h3><p><strong>预训练</strong>过程：从零开始（无法组织合理的单词），使用互联网语料学习预测下一个 token</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230120287.png" alt="image-20240811230120287" style="zoom:40%;">
+
+
+
+  <div class="note p-4 mb-4 rounded-small warning">
+    <p>预训练过程中使用网络数据会导致的问题：</p>
+ <img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230641220.png" alt="image-20240811230641220" style="zoom:40%;">
+
+<p> （左图）使用选择题数据进行训练，则会导致模型生成的结果为下一个选项</p>
+
+  </div>
+
+
+<h3 id="2-2-微调"><a href="#2-2-微调" class="headerlink" title="2.2 微调"></a>2.2 微调</h3><p>微调的作用：将预训练生成的基础模型（base model）进一步训练为<strong>有用的模型</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240811230953764.png" alt="image-20240811230953764" style="zoom:50%;">
+
+<p>区别于预训练，只需要使用<strong>少量数据</strong>（因为已经有了丰富语料训练的基础模型）</p>
+<h3 id="2-3-微调的行为作用"><a href="#2-3-微调的行为作用" class="headerlink" title="2.3 微调的行为作用"></a>2.3 微调的行为作用</h3><ul>
+<li>改变模型的<strong>行为模式</strong>（在不需要大量的提示工程的前提下更适用于某种特定的场景，如对话、问卷调查等）</li>
+<li>学习<strong>新的知识</strong>（特定领域的细分知识学习+纠正泛式学习的错误）</li>
+</ul>
+<h3 id="2-4-微调的任务"><a href="#2-4-微调的任务" class="headerlink" title="2.4 微调的任务"></a>2.4 微调的任务</h3><ul>
+<li><strong>提取</strong>（Extraction）：提炼关键词，Reading 的工作 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 主题提取/规划等任务</li>
+<li><strong>拓展</strong>（Expansion）：内容扩充，Writing 的工作      <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 聊天/写信/写代码等任务</li>
+</ul>
+<h2 id="三、指令微调"><a href="#三、指令微调" class="headerlink" title="三、指令微调"></a>三、指令微调</h2>
+  <div class="note p-4 mb-4 rounded-small red icon-padding">
+    <i class="note-icon fa-solid fa-bolt"></i><p>赋予GPT聊天的能力 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> ChatGPT</p>
+
+  </div>
+
+<h3 id="3-1-什么是指令微调"><a href="#3-1-什么是指令微调" class="headerlink" title="3.1 什么是指令微调"></a>3.1 什么是指令微调</h3><p>指令微调：让模型<strong>变得更像一个聊天机器人</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205113081.png" alt="image-20240812205113081" style="zoom:50%;">
+
+<p>使用的数据集：<strong>对话式数据集</strong>（指令应答式数据集），从晚上的聊天对话中可以获取。</p>
+<h3 id="3-2-指令微调生成"><a href="#3-2-指令微调生成" class="headerlink" title="3.2 指令微调生成"></a>3.2 指令微调生成</h3><ul>
+<li>可以生成微调时学习的知识数据</li>
+<li>也可以生成<strong>微调中不存在的数据</strong>（但是base model学习的数据中包含）<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 微调后也可以回答（如回答代码问题）</li>
+</ul>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205508007.png" alt="image-20240812205508007" style="zoom:50%;">
+
+<h3 id="3-3-指令微调过程"><a href="#3-3-指令微调过程" class="headerlink" title="3.3 指令微调过程"></a>3.3 指令微调过程</h3><p>遵循普通的微调策略：<strong>数据准备/训练/评估</strong> 的<strong>循环</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812205634840.png" alt="image-20240812205634840" style="zoom:40%;">
+
+<p>指令微调的区别在于：<strong>数据准备阶段</strong> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 根据不同的任务调整数据</p>
+<h2 id="四、数据准备"><a href="#四、数据准备" class="headerlink" title="四、数据准备"></a>四、数据准备</h2><h3 id="4-1-数据标准"><a href="#4-1-数据标准" class="headerlink" title="4.1 数据标准"></a>4.1 数据标准</h3><p>如何衡量好的数据（better data）</p>
+<ul>
+<li>高质量（因为要让LLM去模仿）</li>
+<li>多样性（保证不一样的输入会有不一样的结果）</li>
+<li>真实数据（一般不使用生成数据，因为生成行为存在固有模式）</li>
+<li>多</li>
+</ul>
+<h3 id="4-2-准备步骤"><a href="#4-2-准备步骤" class="headerlink" title="4.2 准备步骤"></a>4.2 准备步骤</h3><ul>
+<li>收集<strong>指令-响应对</strong>（instruction-response pair）</li>
+<li><strong>连接</strong>指令和响应（使用prompt模板等）</li>
+<li><strong>分词</strong>（Tokenize），接着<strong>填充或截断</strong>数据 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 大小适合模型</li>
+<li><strong>划分</strong>训练集和测试集</li>
+</ul>
+<h3 id="4-3-分词（Tokenize）"><a href="#4-3-分词（Tokenize）" class="headerlink" title="4.3 分词（Tokenize）"></a>4.3 分词（Tokenize）</h3><p>分词：将<strong>文本数据转化为数字</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812213610668.png" alt="image-20240812213610668" style="zoom:50%;">
+
+<p>一般来说不是按照单词划分，而是按照==<strong>出现的频率</strong>==，如上图的 <code>ing</code> <strong>词元</strong>（token）</p>
+<p>一般实践中会根据指定的模型自动选择合适的分词器：</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer</span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">"Model_Name"</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>由于分词的结果导致token的个数长度不同（如下图不同的句子有不同个数个token），使用 padding <strong>填充（padding）词元</strong>进行补全 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> 可以使用一致维度的张量（tensor）</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812214141098.png" alt="image-20240812214141098" style="zoom:50%;">
+
+<p>填充结果：</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812214316681.png" alt="image-20240812214316681" style="zoom:50%;">
+
+<p>受限于模型能够接收的最大编码长度，需要对某些过长的进行<strong>截断（truncation）</strong>：</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812215645773.png" alt="image-20240812215645773" style="zoom:50%;">
+
+<p>设置 <code>tokenizer</code> 的属性即可实现填充和截断：</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=tokenizer(list_texts,max_length=xxx,truncation=<span class="literal">True</span>,padding=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="五、训练过程"><a href="#五、训练过程" class="headerlink" title="五、训练过程"></a>五、训练过程</h2><p>和普通的神经网络训练相同，添加训练数据 -&gt; 计算损失 -&gt; 反向传播 -&gt; 更新权重</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240812222250254.png" alt="image-20240812222250254" style="zoom:50%;">
+
+
+  <div class="note p-4 mb-4 rounded-small primary">
+    <p>补充：入门时可以尝试 WebUI 式微调方式：</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/hiyouga/LLaMA-Factory">hiyouga/LLaMA-Factory: A WebUI for Efficient Fine-Tuning of 100+ LLMs (ACL 2024) (github.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813143708282.png" alt="image-20240813143708282" style="zoom:50%;">
+  </div>
+
+<p>训练过程中可以打印查看数据集中存在<strong>主题纠偏</strong>（Moderation，类似于ChatGPT回答的 “对不起我作为AI我不知道….” ），使得LLM学会聚焦主题：</p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813144220233.png" alt="image-20240813144220233" style="zoom:50%;">
+
+<h2 id="六、评估和迭代"><a href="#六、评估和迭代" class="headerlink" title="六、评估和迭代"></a>六、评估和迭代</h2><h3 id="6-1-常用基准"><a href="#6-1-常用基准" class="headerlink" title="6.1 常用基准"></a>6.1 常用基准</h3><p><strong>ARC / HellaSwag / MMLU / TruthfulQA</strong></p>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813153359741.png" alt="image-20240813153359741" style="zoom:50%;">
+
+<p>注意不能用单一的 benckmark 结果来评判微调的好坏（微调的作用是更适用于某一个领域，也许这个领域和 benchmark 的领域并不相似）</p>
+<h3 id="6-2-错误分析（Error-Analysis）"><a href="#6-2-错误分析（Error-Analysis）" class="headerlink" title="6.2 错误分析（Error Analysis）"></a>6.2 错误分析（Error Analysis）</h3><p>常用的分析和评估模型的框架 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> <strong>分类错误</strong>，以便能识别常见错误，并<strong>优先解决</strong>常见和重大的错误</p>
+<p>错误类型：</p>
+<ul>
+<li>错误拼写</li>
+<li>长度（过于啰嗦）</li>
+<li>重复</li>
+</ul>
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813153912024.png" alt="image-20240813153912024" style="zoom:50%;">
+
+<h2 id="七、建议和实用技巧"><a href="#七、建议和实用技巧" class="headerlink" title="七、建议和实用技巧"></a>七、建议和实用技巧</h2><p><img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813162743024.png" alt="image-20240813162743024"></p>
+<p>更高效的参数微调方法：<strong>LoRA</strong></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813163853911.png" alt="image-20240813163853911"></p>
+
+  <div class="note p-4 mb-4 rounded-small red icon-padding">
+    <i class="note-icon fa-solid fa-bolt"></i><img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813164000009.png" alt="image-20240813164000009" style="zoom:60%;">
+  </div>
+
+<img lazyload="" src="/images/loading.svg" data-src="http://henry-typora.oss-cn-beijing.aliyuncs.com/img/image-20240813164024324.png" alt="image-20240813164024324" style="zoom:67%;">
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 大语言模型微调之道</li>
+        <li><strong>Author:</strong> Henry Hua</li>
+        <li><strong>Created at
+                :</strong> 2024-08-16 16:40:35</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-08-16 19:07:50
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://huahenry.github.io/2024/08/16/LLM Finetuning/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/LLM/">#LLM</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'Ov23lifZOoxxexfvNV8s',
+                    clientSecret: '58e9e000407a607567d1a4a6422a8384fd2d046a',
+                    repo: 'Gitalk_Blog',
+                    owner: 'HuaHenry',
+                    admin: ['HuaHenry'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">大语言模型微调之道</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BE%AE%E8%B0%83"><span class="nav-number">1.</span> <span class="nav-text">一、为什么要微调</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 大模型微调的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%BE%AE%E8%B0%83%E5%92%8C%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 微调和提示工程的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%BE%AE%E8%B0%83%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 微调的好处</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BE%AE%E8%B0%83%E5%9C%A8%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">二、微调在训练过程中的位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%A2%84%E8%AE%AD%E7%BB%83"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 预训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%BE%AE%E8%B0%83"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 微调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%BE%AE%E8%B0%83%E7%9A%84%E8%A1%8C%E4%B8%BA%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 微调的行为作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E5%BE%AE%E8%B0%83%E7%9A%84%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 微调的任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8C%87%E4%BB%A4%E5%BE%AE%E8%B0%83"><span class="nav-number">3.</span> <span class="nav-text">三、指令微调</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%8C%87%E4%BB%A4%E5%BE%AE%E8%B0%83"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 什么是指令微调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%8C%87%E4%BB%A4%E5%BE%AE%E8%B0%83%E7%94%9F%E6%88%90"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 指令微调生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%8C%87%E4%BB%A4%E5%BE%AE%E8%B0%83%E8%BF%87%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 指令微调过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">4.</span> <span class="nav-text">四、数据准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%95%B0%E6%8D%AE%E6%A0%87%E5%87%86"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 数据标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%87%86%E5%A4%87%E6%AD%A5%E9%AA%A4"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 准备步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%88%86%E8%AF%8D%EF%BC%88Tokenize%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 分词（Tokenize）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">五、训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E8%AF%84%E4%BC%B0%E5%92%8C%E8%BF%AD%E4%BB%A3"><span class="nav-number">6.</span> <span class="nav-text">六、评估和迭代</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E5%B8%B8%E7%94%A8%E5%9F%BA%E5%87%86"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 常用基准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E9%94%99%E8%AF%AF%E5%88%86%E6%9E%90%EF%BC%88Error-Analysis%EF%BC%89"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 错误分析（Error Analysis）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E5%BB%BA%E8%AE%AE%E5%92%8C%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">7.</span> <span class="nav-text">七、建议和实用技巧</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Henry Hua</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        1 posts in total
+                    </span>
+                    
+                        <span>
+                            1.5k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
