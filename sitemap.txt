@@ -1,8 +1,8 @@
-http://example.com/2024/08/23/ML_math/
-http://example.com/2024/08/16/LLM_Finetuning/
-http://example.com/tags/index.html
-http://example.com/googlecbe7b6bd4c7556f7.html
-http://example.com/
-http://example.com/tags/LLM/
-http://example.com/categories/NLP/
-http://example.com/categories/Math/
+http://huahenry.github.io/2024/08/23/ML_math/
+http://huahenry.github.io/2024/08/16/LLM_Finetuning/
+http://huahenry.github.io/tags/index.html
+http://huahenry.github.io/googlecbe7b6bd4c7556f7.html
+http://huahenry.github.io/
+http://huahenry.github.io/tags/LLM/
+http://huahenry.github.io/categories/NLP/
+http://huahenry.github.io/categories/Math/
