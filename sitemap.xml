@@ -4,7 +4,7 @@
   <url>
     <loc>http://huahenry.github.io/2024/08/23/ML_math/</loc>
     
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-08-29</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -40,7 +40,7 @@
 
   <url>
     <loc>http://huahenry.github.io/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-08-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -48,7 +48,7 @@
   
   <url>
     <loc>http://huahenry.github.io/tags/LLM/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -57,14 +57,14 @@
   
   <url>
     <loc>http://huahenry.github.io/categories/NLP/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://huahenry.github.io/categories/Math/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
