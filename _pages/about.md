@@ -25,12 +25,15 @@ My research focus on **generalization in large language models** (LLMs), includi
 
 <!-- I have published more than 100 papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
-# 以下部分尚未完善，正在建设中...
-
+<br/>
+<br/>
 
 # 🔥 News
 - *2025.07*: &nbsp;🎉🎉 We released a new paper [TAIL](https://arxiv.org/abs/2507.13332) proposing a programmatic approach to enhance length generalization in LLMs. 
 <!-- - *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
+
+<br/>
+<br/>
 
 # Publications 
 
@@ -63,6 +66,7 @@ Under review… just like my papers.
 # Invited Talks
 
 Feel free to invite me 😈
+
 <!-- - *2021.06*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
 - *2021.03*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  \| [\[video\]](https://github.com/) -->
 
