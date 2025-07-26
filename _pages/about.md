@@ -60,13 +60,13 @@ Under review… just like my papers.
 
 <br/>
 
-# Educations
+#  Educations
 - *2021.09 - 2025.06*, **B.Eng.** in Computer Science, **Tongji University**. 
 - *2025.09 - Now*, **PhD Student** in Computer Science, **Fudan University**. 
 
 <br/>
 
-# Invited Talks
+#  Invited Talks
 
 Feel free to invite me 😈
 
