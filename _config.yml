@@ -7,12 +7,12 @@
 
 # Site Settings
 title                    : "Zhouqi HUA"
-description              : "PhD student in Computer Science, Fudan University & Shanghai AI Lab, interested in Reasoning LLM & RL"
+description              : "Interested in Reasoning LLM / RL"
 repository               : "HuaHenry/HuaHenry.github.io"
 google_scholar_stats_use_cdn : true
 
 # google analytics
-google_analytics_id      :  # get google_analytics_id from https://analytics.google.com/analytics/
+google_analytics_id      :  "UtSuyOIAAAAJ"
 
 # SEO Related
 google_site_verification :  # get google_site_verification from https://search.google.com/search-console/about
@@ -23,7 +23,7 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 author:
   name             : "Zhouqi HUA"
   avatar           : "images/final.jpg"
-  bio              : "Shanghai AI Lab / Fudan University"
+  bio              : "Shanghai AI Lab"
   location         : "Shanghai, China"
   employer         :
   pubmed           : 
