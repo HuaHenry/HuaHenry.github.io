@@ -28,7 +28,8 @@ My research focus on **generalization in large language models** (LLMs), includi
 <br/>
 
 # 🔥 News
-- *2025.07*: &nbsp;🎉🎉 We released a new paper [TAIL](https://arxiv.org/abs/2507.13332) proposing a programmatic approach to enhance length generalization in LLMs. 
+- *2024.10*: &nbsp; Started a research internship at Shanghai AI Lab, focusing on LLM generalization.
+- *2025.07*: &nbsp;🎉🎉 Released a new paper [TAIL](https://arxiv.org/abs/2507.13332) proposing a programmatic approach to enhance length generalization in LLMs. 
 <!-- - *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
 
 <br/>
