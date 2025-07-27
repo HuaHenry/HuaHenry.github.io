@@ -77,4 +77,4 @@ Feel free to invite me 😈
 <br/>
 
 # Internships
-- *2024.10 - Now*, OpenMMLab, [Shanghai AI Lab](https://www.shlab.org.cn/), China.
+- *2024.10 - Now*, InternLM Group, [Shanghai AI Lab](https://www.shlab.org.cn/), China.
