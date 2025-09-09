@@ -27,21 +27,24 @@ My research focus on **generalization in large language models** (LLMs), includi
 
 <br/>
 
-# 🔥 News
-- *2024.10*: &nbsp; Started a research internship at Shanghai AI Lab, focusing on LLM generalization.
-- *2025.07*: &nbsp;🎉🎉 Released a new paper [TAIL](https://arxiv.org/abs/2507.13332) proposing a programmatic approach to enhance length generalization in LLMs. 
+# News
+- [2025.07] We release [Intern-S1](https://arxiv.org/abs/2508.15763), an advanced open-source scientific multimodal reasoning model.
+- [2025.07] We release a new paper [TAIL](https://arxiv.org/abs/2507.13332) proposing a programmatic approach to enhance length generalization in LLMs. 
+
 <!-- - *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
 
 <br/>
 
 # Publications 
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Under Review</div><img src='papers/TAIL.jpg' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Under Review</div><img src='papers/TAIL.jpg' alt="sym" width="400px"></div></div>
 <div class='paper-box-text' markdown="1">
 
-[The Imitation Game: Turing Machine Imitator is Length Generalizable Reasoner](https://arxiv.org/abs/2507.13332)
+**The Imitation Game: Turing Machine Imitator is Length Generalizable Reasoner**
 
 **Zhouqi Hua**, Wenwei Zhang\*, Chengqi Lyu, Yuzhe Gu, Songyang Gao, Kuikun Liu, Kai Chen\*
+
+[[Arxiv](https://arxiv.org/abs/2507.13332)] [[HuggingFace](https://huggingface.co/papers/2507.13332)]
 
 <!-- [**Project**](https://scholar.google.com/citations?view_op=view_citation&hl=zh-CN&user=DhtAFkwAAAAJ&citation_for_view=DhtAFkwAAAAJ:ALROH1vI_8AC) <strong><span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span></strong>
 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
@@ -52,9 +55,9 @@ My research focus on **generalization in large language models** (LLMs), includi
 
 <br/>
 
-# Honors and Awards
+<!-- # Honors and Awards
 
-Under review… just like my papers.
+Under review… just like my papers. -->
 
 <!-- - *2021.10* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
 - *2021.09* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
