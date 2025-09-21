@@ -43,7 +43,7 @@ My research focus on **generalization in large language models** (LLMs), includi
   <img src="paper/TAIL.jpg" alt="TAIL paper cover">
   <div class="publication-details">
     <h3 class="publication-title">The Imitation Game: Turing Machine Imitator is Length Generalizable Reasoner</h3>
-    <p class="publication-authors"><strong>Zhouqi Hua</strong>, Wenwei Zhang*, Chengqi Lyu, Yuzhe Gu, Songyang Gao, Kuikun Liu, Kai Chen*</p>
+    <p class="publication-authors"><strong>Zhouqi Hua</strong>, Wenwei Zhang*, Chengqi Lyu, Yuzhe Gu, Songyang Gao, Kuikun Liu, Dahua Lin*, Kai Chen*</p>
     <p class="publication-venue"><em>preprint</em></p>
     <div class="publication-links">
       <a href="https://arxiv.org/abs/2507.13332" target="_blank">Arxiv</a>
