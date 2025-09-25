@@ -2,12 +2,13 @@
 
 Hi👋, I am Zhouqi HUA (华洲琦).
 
-I am an **incoming PhD student** at [Fudan University](https://www.fudan.edu.cn/), in the joint program at [Shanghai AI Laboratory](https://www.shlab.org.cn/), advised by Dr. [Wenwei Zhang](https://zhangwenwei.cn/), Dr. [Kai Chen](https://chenkai.site/) and Prof. [Dahua Lin](https://dahua.site/). Before that, I received the bachelor degree at Tongji University in 2025.
-My research focus on **generalization in large language models** (LLMs), including length generalization and compositional generalization; and model interpretability.
+I am a **PhD student** at [Fudan University](https://www.fudan.edu.cn/), in the joint program at [Shanghai AI Laboratory](https://www.shlab.org.cn/), advised by Dr. [Wenwei Zhang](https://zhangwenwei.cn/), Dr. [Kai Chen](https://chenkai.site/) and Prof. [Dahua Lin](https://dahua.site/). Before that, I received the bachelor degree at Tongji University in 2025.
+My research focus on **generalization in large language models** (LLMs), including length generalization and compositional generalization.
 
 ---
 
 ## Latest News
+- **[2025.07]** One paper [TAIL](https://arxiv.org/abs/2507.13332) has been rejected by The *Thirty-Ninth Annual Conference on Neural Information Processing Systems* (Neurips 2025).
 - **[2025.07]** We release [Intern-S1](https://arxiv.org/abs/2508.15763), an advanced open-source scientific multimodal reasoning model.
 - **[2025.07]** We release a new paper [TAIL](https://arxiv.org/abs/2507.13332) proposing a programmatic approach to enhance length generalization in LLMs.
 
