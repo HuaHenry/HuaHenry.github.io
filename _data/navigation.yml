@@ -4,7 +4,7 @@ pages:
 # - name: Home
 #   url: /
 - name: Home
-  url: /index
+  url: /
 - name: Publications
   url: /publications
 # - name: Showcase
