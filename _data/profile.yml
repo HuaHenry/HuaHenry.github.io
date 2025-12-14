@@ -1,9 +1,9 @@
-primary_name: "Zhouqi Hua (华洲琦)"
+primary_name: "Zhouqi Hua"
 secondary_name: ""
 navbar_name: "Zhouqi @ Shanghai AI Lab"
 
 positions:
-- name: PhD. Student
+- name: Ph.D. Student
 - name: Fudan University & Shanghai AI Lab
   logo: /assets/images/badges/fudan-circle.png  # Logo is optional
 
@@ -11,7 +11,7 @@ positions:
 email: "huazhouqi@pjlab.org.cn"
 # cv_link: link-to-your-cv-file
 gscholar: UtSuyOIAAAAJ  # This is an example, replace it with your own Google Scholar ID
-github: 116665615
+github: HuaHenry
 # twitter: your_twitter_id  # Do not include the '@' symbol
 # wechat_qrcode: /assets/images/etc/wechat.jpg
 # wechat_prompt: >-
@@ -21,8 +21,10 @@ github: 116665615
 
 short_bio_text_justify: false
 short_bio: >-
+  <p>Hi👋 I am Zhouqi Hua (华洲琦).
+  </p>
   <p>
-    I am a first year <strong>PhD student</strong> at <a href="https://www.fudan.edu.cn/" target="_blank">Fudan University</a>, in the joint program at <a href="https://www.shlab.org.cn/" target="_blank">Shanghai AI Laboratory</a>, advised by Dr. <a href="https://zhangwenwei.cn/" target="_blank">Wenwei Zhang</a>, Dr. <a href="https://chenkai.site/" target="_blank">Kai Chen</a> and Prof. <a href="https://dahua.site/" target="_blank">Dahua Lin</a>. Before that, I received the bachelor degree at Tongji University in 2025.
+    I am a first year <strong>PhD student</strong> at <a href="https://www.fudan.edu.cn/" target="_blank">Fudan University</a>, in the joint program in Large Model Center of <a href="https://www.shlab.org.cn/" target="_blank">Shanghai AI Laboratory</a>, advised by Dr. <a href="https://zhangwenwei.cn/" target="_blank">Wenwei Zhang</a>, Dr. <a href="https://chenkai.site/" target="_blank">Kai Chen</a> and Prof. <a href="https://dahua.site/" target="_blank">Dahua Lin</a>. Before that, I received the bachelor degree at Tongji University in 2025.
   </p>
   <p>
     My research focus on <strong>generalization in LLMs</strong>, including length generalization and compositional generalization. Now I'm interested in investigating the <strong>mathematical abilities of LLMs</strong>.
@@ -41,9 +43,7 @@ education:
   date: Sep. 2025 - present
 - name: Fudan University
   logo: /assets/images/badges/fudan-circle.png
-  position: >- 
-    College of Computer Science and Artificial Intelligence
-    Ph.D. Student
+  position: Ph.D. Student in Computer Science
   date: Sep. 2025 - present
 - name: Tongji University
   logo: /assets/images/badges/tongji.png
@@ -61,5 +61,8 @@ awards:
   date: 2024
 - name: Tongji Excellent Student Scholarship (First Prize)
   date: 2024
-- name: National Second Prize in CCCC-MAIC (Organized by Apple)
+- name: National Second Prize in CCCC-MAIC
   date: 2024
+- name: Tongji Excellent Student Scholarship (First Prize)
+  date: 2023
+
