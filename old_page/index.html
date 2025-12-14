@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zhouqi HUA (华洲琦)</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --header-bg: #2d2d2d;
+            --accent-color: #00ff9d;
+            --secondary-color: #888;
+            --terminal-bg: #0d0d0d;
+            --terminal-header: #2d2d2d;
+            --link-color: #61dafb;
+            --strong-color: #00ff9d;
+            --image-bg: #333;
+            --border-color: rgba(0, 255, 157, 0.2);
+            --button-hover-bg: rgba(0, 255, 157, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        
+
+        body[data-theme='light'] {
+            --bg-color: #f5f5f5;
+            --text-color: #212121;
+            --header-bg: #ffffff;
+            --accent-color: #008060;
+            --secondary-color: #757575;
+            --terminal-bg: #fafafa;
+            --terminal-header: #eeeeee;
+            --link-color: #007acc;
+            --strong-color: #008060;
+            --image-bg: #e0e0e0;
+            --border-color: rgba(0, 128, 96, 0.2);
+            --button-hover-bg: rgba(0, 128, 96, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            width: 100%;
+            max-width: 900px;
+            padding: 40px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            background-color: var(--header-bg);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        /* Header layout */
+        .header-flex {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 10px;
+            gap: 50px;
+            flex-wrap: wrap;
+            text-align: left;
+        }
+
+        .profile-left {
+            flex-shrink: 0;
+            position: relative;
+            left: 20px;
+        }
+
+        .profile-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (max-width: 600px) {
+            .header-flex {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+            .profile-right {
+                align-items: center;
+            }
+        }
+
+        #theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 1px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        #theme-toggle:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        .theme-icon { display: none; }
+        body[data-theme='light'] .sun-icon { display: block; }
+        body[data-theme='dark'] .moon-icon { display: block; }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        h1 { font-size: 2.8em; color: var(--accent-color); margin: 0; }
+        .header-subtitle { font-size: 1.1em; color: var(--secondary-color); margin-top: 5px; font-weight: bolder; }
+
+        nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        nav a { color: var(--secondary-color); text-decoration: none; font-size: 16px; padding: 8px 15px; border: 1px solid transparent; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
+        nav a.active, nav a:hover { color: var(--accent-color); border-color: var(--accent-color); background-color: var(--button-hover-bg); }
+
+        /* #terminal { width: 100%; max-width: 950px; min-height: 600px; background-color: var(--terminal-bg); border-radius: 8px; box-shadow: 0 10px 30px var(--shadow-color); display: flex; flex-direction: column; margin-bottom: 30px; transition: background-color 0.3s; } */
+        #terminal {
+    width: 100%;
+    max-width: 950px;
+    height: 480px; /* 固定高度，避免撑满页面 */
+    background-color: var(--terminal-bg);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    transition: background-color 0.3s;
+}
+        .terminal-header-bar { background-color: var(--terminal-header); padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-family: 'Roboto Mono', monospace; font-size: 0.9em; color: var(--secondary-color); transition: background-color 0.3s, color 0.3s;}
+        .terminal-header-title { flex-grow: 1; text-align: center; }
+        .terminal-buttons { display: flex; gap: 8px; }
+        .terminal-buttons span { width: 12px; height: 12px; border-radius: 50%; }
+        .btn-red { background-color: #ff5f56; }
+        .btn-yellow { background-color: #ffbd2e; }
+        .btn-green { background-color: #27c93f; }
+
+        .terminal-body {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 15px;
+    line-height: 1.5;
+
+    /* 新增下面这些 */
+    max-height: 400px; /* 可根据需求调整 */
+    overflow-x: hidden;
+}
+        .terminal-body::-webkit-scrollbar { width: 8px; }
+        .terminal-body::-webkit-scrollbar-track { background: var(--terminal-header); border-bottom-right-radius: 8px; }
+        .terminal-body::-webkit-scrollbar-thumb { background-color: var(--secondary-color); border-radius: 4px; }
+        
+        .prompt::before { content: 'user@zhouqi.dev:~$ '; color: var(--accent-color); }
+        .cursor { display: inline-block; width: 8px; height: 1.2em; background-color: var(--accent-color); animation: blink 1s step-end infinite; vertical-align: bottom; }
+        @keyframes blink { from, to { background-color: transparent; } 50% { background-color: var(--accent-color); } }
+
+        .response { white-space: pre-wrap; }
+        .response a { color: var(--link-color); text-decoration: none; cursor: pointer; }
+        .response a:hover { text-decoration: underline; }
+        .response strong { color: var(--strong-color); font-weight: bold; }
+        .response h2 { color: var(--accent-color); font-size: 1.6em; margin-top: 25px; margin-bottom: 2px; border-bottom: 1px dashed var(--secondary-color); padding-bottom: 0px; font-family:'Courier New', Courier, monospace;}
+        .response h3 { color: var(--strong-color); font-size: 1.1em; margin-top: 0.5em; margin-bottom: 0.125em; }
+
+        /* .publication-item { display: flex; gap: 20px; margin-bottom: 20px; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; background-color: rgba(0, 0, 0, 0.2); align-items: flex-start; }
+        body[data-theme='light'] .publication-item { background-color: transparent; }
+        .publication-item img { width: 180px; height: auto; border-radius: 4px; object-fit: cover; flex-shrink: 0; background-color: var(--image-bg); padding: 5px; border: 1px solid var(--secondary-color); }
+        .publication-details { display: flex; flex-direction: column; gap: 8px; }
+        .publication-links a { margin-right: 15px; font-weight: bold; }
+        
+        @media (max-width: 768px) {
+            header { padding: 30px 15px; }
+            h1 { font-size: 2em; }
+            #theme-toggle { top: 15px; right: 15px; width: 35px; height: 35px; font-size: 18px; }
+            .publication-item { flex-direction: column; align-items: center; }
+            .publication-item img { width: 100%; max-width: 250px; margin-bottom: 15px; }
+        } */
+
+        .publication-item {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 0px;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.015);
+    box-shadow: 0 2px 8px rgba(0, 255, 157, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.publication-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 255, 157, 0.08);
+}
+
+.publication-item img {
+    margin-top: 2px;
+    width: 250px;
+    height: auto;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid var(--secondary-color);
+    background-color: var(--image-bg);
+}
+
+.publication-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px; /* 控制行间距 */
+    font-family: 'Fira Code', monospace;
+    font-size: 15px;
+    line-height: 1.4;
+    margin-top: 2px;
+}
+
+.publication-title {
+    color: var(--strong-color);
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.publication-authors {
+    color: var(--secondary-color);
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.publication-venue {
+    font-style: italic;
+    font-size: 0.9em;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 2px;
+    padding-top: 0;
+}
+
+.publication-links a {
+    color: var(--link-color);
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: color 0.2s ease;
+    padding: 0;
+}
+
+.publication-links a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .publication-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .publication-item img {
+        width: 100%;
+        max-width: 200px;
+    }
+    .publication-details {
+        align-items: center;
+    }
+    .publication-links {
+        justify-content: center;
+    }
+}
+
+/* .publication-item h3,
+.publication-item p {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.35;
+}
+
+.publication-links {
+    margin-top: 4px !important;
+} */
+
+.content p {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+    </style>
+</head>
+<body data-theme="dark">
+
+    <!-- <header>
+        <button id="theme-toggle" title="Toggle theme">
+            <span class="theme-icon sun-icon">☀️</span>
+            <span class="theme-icon moon-icon">🌙</span>
+        </button>
+        <img src="./img/final.jpg" alt="Zhouqi HUA Profile" class="profile-pic">
+        <h1>Zhouqi HUA (华洲琦)</h1>
+        <p class="header-subtitle">Incoming PhD Student | Fudan University & Shanghai AI Lab</p>
+    </header> -->
+
+    <header class="header-flex">
+        <button id="theme-toggle" title="Toggle theme">
+            <span class="theme-icon sun-icon">☀️</span>
+            <span class="theme-icon moon-icon">🌙</span>
+        </button>
+        <div class="profile-left">
+            <img src="./img/final.jpg" alt="Zhouqi HUA Profile" class="profile-pic">
+        </div>
+        <div class="profile-right">
+            <h1>Zhouqi HUA (华洲琦)</h1>
+            <p class="header-subtitle">PhD Student | Fudan University & Shanghai AI Lab</p>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#" id="tab-about" class="active">About Me</a>
+        <a href="#" id="tab-news">News</a>
+        <a href="#" id="tab-publications">Publications</a>
+        <a href="#" id="tab-education">Education</a>
+        <a href="#" id="tab-internships">Internships</a>
+        <a href="#" id="tab-talks">Invited Talks</a>
+        <a href="#" id="tab-contact">Contact</a>
+    </nav>
+
+    <div id="terminal">
+        <div class="terminal-header-bar">
+            <div class="terminal-buttons">
+                <span class="btn-red"></span>
+                <span class="btn-yellow"></span>
+                <span class="btn-green"></span>
+            </div>
+            <span class="terminal-header-title">user@zhouqi.dev</span>
+            <span></span>
+        </div>
+        <div class="terminal-body" id="terminal-body"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminalBody = document.getElementById('terminal-body');
+            const navLinks = document.querySelectorAll('nav a');
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            let currentTypingProcess = null;
+            const tabsData = {};
+
+            // --- Theme Switcher ---
+            const applyTheme = (theme) => {
+                body.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            };
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            });
+
+            // Apply saved theme on load
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            applyTheme(savedTheme);
+
+
+            // --- Content Loading and Parsing ---
+            // const loadAndParseContent = async () => {
+            //     try {
+            //         const response = await fetch('./content.md');
+            //         if (!response.ok) {
+            //             terminalBody.innerHTML = `<span style="color: #ff5f56;">Error: Could not load content.md. Make sure the file exists.</span>`;
+            //             return;
+            //         }
+            //         const markdownText = await response.text();
+                    
+            //         const sections = markdownText.split(/\n---\n/);
+            //         // const metadataRegex = //;
+            //         const metadataRegex = /<!--\s*id:\s*(.+?)\s*\|\s*cmd:\s*(.+?)\s*-->/;
+
+            //         sections.forEach(section => {
+            //             const match = section.match(metadataRegex);
+            //             if (match) {
+            //                 const id = match[1].trim();
+            //                 const command = match[2].trim();
+            //                 const content = section.replace(metadataRegex, '').trim();
+            //                 tabsData[id] = {
+            //                     command: command,
+            //                     htmlContent: marked.parse(content) // Using marked.js to parse MD to HTML
+            //                 };
+            //             }
+            //         });
+
+            //         // Initial load
+            //         setActiveTab('tab-about');
+
+            //     } catch (error) {
+            //         console.error('Error fetching or parsing content:', error);
+            //         terminalBody.innerHTML = `<span style="color: #ff5f56;">Error: Could not fetch content. Please check your network or console for errors.</span>`;
+            //     }
+            // };
+
+            const loadAndParseContent = async () => {
+    try {
+        const response = await fetch('./content.md');
+        if (!response.ok) {
+            terminalBody.innerHTML = `<span style="color: #ff5f56;">Error: Could not load content.md. Make sure the file exists.</span>`;
+            return;
+        }
+        const markdownText = await response.text();
+
+        // Split by level-2 headings: ##
+        const rawSections = markdownText.split(/\n(?=## )/g);
+
+        // Map section titles to tab ids manually
+        const sectionMap = {
+            'About Me': 'about',
+            'Latest News': 'news',
+            'Publications': 'publications',
+            'Education': 'education',
+            'Internships': 'internships',
+            'Invited Talks': 'talks',
+            'Contact Information': 'contact'
+        };
+
+        rawSections.forEach(section => {
+            const match = section.match(/^##\s*(.+)/);
+            if (match) {
+                const title = match[1].trim();
+                const id = sectionMap[title];
+                if (id) {
+                    const command = `show ${id}`;
+                    tabsData[id] = {
+                        command: command,
+                        htmlContent: marked.parse(section.trim())
+                    };
+                }
+            }
+        });
+
+        setActiveTab('tab-about');
+
+    } catch (error) {
+        console.error('Error fetching or parsing content:', error);
+        terminalBody.innerHTML = `<span style="color: #ff5f56;">Error: Could not fetch content. Please check your network or console for errors.</span>`;
+    }
+};
+            
+            // --- Terminal Simulation ---
+            function typeContent(command, htmlContent) {
+                if (currentTypingProcess) clearTimeout(currentTypingProcess);
+                
+                terminalBody.innerHTML = ''; 
+
+                let i = 0;
+                const promptLine = document.createElement('div');
+                promptLine.innerHTML = `<span class="prompt"><span id="command-span"></span><span class="cursor"></span></span>`;
+                terminalBody.appendChild(promptLine);
+                const commandSpan = document.getElementById('command-span');
+
+                function typeCommand() {
+                    if (i < command.length) {
+                        commandSpan.textContent += command.charAt(i);
+                        i++;
+                        currentTypingProcess = setTimeout(typeCommand, 30); // Faster command typing
+                    } else {
+                        // Remove cursor from command line
+                        promptLine.querySelector('.cursor').style.display = 'none';
+                        // Render response instantly after a short delay
+                        renderResponse(htmlContent);
+                    }
+                }
+                typeCommand();
+            }
+            
+            function renderResponse(htmlContent) {
+                const responseContainer = document.createElement('div');
+                responseContainer.className = 'response';
+                
+                // Show a brief "processing" cursor before rendering
+                const thinkingCursor = document.createElement('span');
+                thinkingCursor.className = 'cursor';
+                terminalBody.appendChild(thinkingCursor);
+
+                currentTypingProcess = setTimeout(() => {
+                    thinkingCursor.remove();
+                    responseContainer.innerHTML = htmlContent;
+                    terminalBody.appendChild(responseContainer);
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                }, 150); // Short delay to simulate processing
+            }
+
+            function setActiveTab(tabId) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                const activeLink = document.getElementById(tabId);
+                if(activeLink) activeLink.classList.add('active');
+                
+                const contentKey = tabId.replace('tab-', '');
+                const data = tabsData[contentKey];
+
+                if (data) {
+                    typeContent(data.command, data.htmlContent);
+                } else {
+                    typeContent('error', `<span style="color: #ff5f56;">Content for '${contentKey}' not found.</span>`);
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setActiveTab(e.target.id);
+                });
+            });
+
+            // Start the application
+            loadAndParseContent();
+        });
+    </script>
+</body>
+</html>
