@@ -24,7 +24,7 @@ short_bio: >-
   <p>Hi👋 I am Zhouqi Hua (华洲琦).
   </p>
   <p>
-    I am a first year <strong>PhD student</strong> at <a href="https://www.fudan.edu.cn/" target="_blank">Fudan University</a>, in the joint program in Large Model Center of <a href="https://www.shlab.org.cn/" target="_blank">Shanghai AI Laboratory</a>, advised by Dr. <a href="https://zhangwenwei.cn/" target="_blank">Wenwei Zhang</a>, Dr. <a href="https://chenkai.site/" target="_blank">Kai Chen</a> and Prof. <a href="https://dahua.site/" target="_blank">Dahua Lin</a>. Before that, I received the bachelor degree at Tongji University in 2025.
+    I am a first year <strong>PhD student</strong> at <a href="https://www.fudan.edu.cn/" target="_blank">Fudan University</a>, in the joint program in Large Model Center of <a href="https://www.shlab.org.cn/" target="_blank">Shanghai AI Laboratory</a>. I am fortunate to be advised by Dr. <a href="https://zhangwenwei.cn/" target="_blank">Wenwei Zhang</a>, Dr. <a href="https://chenkai.site/" target="_blank">Kai Chen</a> and Prof. <a href="https://dahua.site/" target="_blank">Dahua Lin</a>. Before that, I received the bachelor degree at Tongji University in 2025 (under the supervision of Prof. <a href="https://cs.tongji.edu.cn/info/1063/2824.htm" target="_blank">Yufei Chen</a> and Prof. <a href="https://eezkni.github.io/" target="_blank">Zhangkai Ni</a>).
   </p>
   <p>
     My research focus on <strong>generalization in LLMs</strong>, including length generalization and compositional generalization. Now I'm interested in investigating the <strong>mathematical abilities of LLMs</strong>.
@@ -57,12 +57,11 @@ education:
 #   date: Sep. 2019 - Jul. 2021
 
 awards:
-- name: Tongji Excellent Student Award
+- name: 🥇First Prize, National Intelligent Car Competition
   date: 2024
-- name: Tongji Excellent Student Scholarship (First Prize)
+- name: 🥈Second Prize, CCCC-MAIC (Hosted by Apple Inc.)
   date: 2024
-- name: National Second Prize in CCCC-MAIC
+- name: 🥇Tongji Excellent Student Scholarship (First Prize)
   date: 2024
-- name: Tongji Excellent Student Scholarship (First Prize)
+- name: 🥇Tongji Excellent Student Scholarship (First Prize)
   date: 2023
-
