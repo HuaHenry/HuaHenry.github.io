@@ -36,5 +36,9 @@ navbar_title: Home
         %} -->
         {% include widgets/publication_card.html publications=pubs title="<i class='fas fa-star'></i> Selected Publications" %}
         {% endif %}
+
+        {% if site.data.profile.academic_service %}
+            {% include widgets/academic_service_card.html %}
+        {% endif %}
     </div>
 </div>
